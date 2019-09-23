@@ -1,0 +1,36 @@
+{
+  "name": "@kazah96/react-filtrable",
+  "version": "0.1.1",
+  "description": "A customizable filtrable component",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm  run lint",
+    "preversion": "npm run lint",
+    "lint": "tslint -p tsconfig.json",
+    "build": "tsc"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazah96/component-kit.git"
+  },
+  "author": "kazah96",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kazah96/component-kit/issues"
+  },
+  "homepage": "https://github.com/kazah96/component-kit#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.3"
+  }
+}
