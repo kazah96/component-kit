@@ -1,13 +1,13 @@
 import * as React from "react";
 import { columnsMapper, getDefaultFilters } from "../utils";
 import { IColumnsDefinitions, SMState } from "../types";
-import { IState, IProps } from "./interface";
+import { IState } from "./interface";
 
 function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
   const columns = columnsMapper(columnsDefinitions);
   const defaultFilters = getDefaultFilters(columns, columnsDefinitions);
 
-  return class FilterBlock extends React.PureComponent<IProps, IState> {
+  return class FilterBlock extends React.PureComponent<{}, IState> {
     public state = {
       filters: defaultFilters
     };
