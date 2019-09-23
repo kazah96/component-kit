@@ -38,6 +38,8 @@ export interface Column {
 
 // tslint:disable-next-line: interface-name
 export interface FilterComponentProps {
+  name: string;
+  title: string;
   currentState: SMState;
   onClick(): any;
 }

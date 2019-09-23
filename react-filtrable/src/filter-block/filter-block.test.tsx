@@ -27,14 +27,14 @@ describe("FilterBlock testing", () => {
     ]
   };
 
-  const RenderComponent = ({ currentState, onClick }: FilterComponentProps) => {
+  const RenderComponent = ({ currentState, onClick, name, title }: FilterComponentProps) => {
     if (currentState.isActive === true) {
-      return <div onClick={onClick} className="true"></div>;
+      return <div onClick={onClick} id={name} className="true"></div>;
     }
     if (currentState.isActive === false) {
-      return <div onClick={onClick} className="false"></div>;
+      return <div onClick={onClick} id={name} className="false"></div>;
     }
-    return <div onClick={onClick} className="undef"></div>;
+    return <div onClick={onClick} id={name} className="undef"></div>;
   };
 
   const columnDefinitions: IColumnsDefinitions = {
@@ -45,7 +45,7 @@ describe("FilterBlock testing", () => {
     }
   };
 
-  const columnDefinitionsTwoFilters: IColumnsDefinitions = {
+  const columnDefinitionsThreeFilters: IColumnsDefinitions = {
     id: {
       title: "ID",
       filter: new FilterGenerator(stateMachine),
@@ -71,7 +71,7 @@ describe("FilterBlock testing", () => {
   });
 
   test("Creating three filters", () => {
-    const FilterBlock = createFilterBlock(columnDefinitionsTwoFilters);
+    const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
     const BlockComponent = shallow(<FilterBlock />);
 
     expect(BlockComponent.length).toEqual(3);
@@ -87,4 +87,48 @@ describe("FilterBlock testing", () => {
 
     expect(BlockComponent.dive().find(".true").length).toEqual(1);
   });
+
+  describe("Onclick and onFilterChange", () => {
+    const FilterBlock = createFilterBlock(columnDefinitions);
+    const fn = jest.fn();
+    const BlockComponent = shallow(<FilterBlock onFiltersChange={fn}/>);
+
+    BlockComponent.dive()
+    .find("div")
+    .simulate("click");
+
+    BlockComponent.dive()
+    .find("div")
+    .simulate("click");
+
+    BlockComponent.dive()
+    .find("div")
+    .simulate("click");
+
+    test("To have first call to be Active", () => {
+      expect(fn.mock.calls[0][0].id.isActive).toBeTruthy();
+    })
+
+    test("To have second call not to be Active", () => {
+      expect(fn.mock.calls[1][0].id.isActive).toBeFalsy();
+    })
+
+    test("To have third call to be Active", () => {
+      expect(fn.mock.calls[2][0].id.isActive).toBeTruthy();
+    })
+  });
+
+
+  // describe("Filters grouping", () => {
+  //   const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
+  //   const fn = jest.fn();
+  //   const BlockComponent = shallow(<FilterBlock onFiltersChange={fn}/>);
+
+  //   const idComp = BlockComponent.at(0).simulate('click')
+
+
+
+  //   console.log(idComp.debug())
+  // });
+  
 });

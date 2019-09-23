@@ -7,7 +7,10 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
   const columns = columnsMapper(columnsDefinitions);
   const defaultFilters = getDefaultFilters(columns, columnsDefinitions);
 
-  return class FilterBlock extends React.PureComponent<{}, IState> {
+  return class FilterBlock extends React.PureComponent<
+    { onFiltersChange?(filters: Record<string, SMState>): void },
+    IState
+  > {
     public state = {
       filters: defaultFilters
     };
@@ -22,6 +25,8 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
         return (
           <Component
             key={column.name}
+            name={column.name}
+            title={column.title}
             onClick={handleFilterClick(column.name)}
             currentState={filters[column.name]}
           />
@@ -53,7 +58,11 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
 
       filters[columnName] = nextState;
 
-      this.setState({ filters });
+      this.setState({ filters }, () => {
+        if (this.props.onFiltersChange) {
+          this.props.onFiltersChange(this.state.filters);
+        }
+      });
     };
 
     public handleFilterClick = (columnName: string) => () => {
