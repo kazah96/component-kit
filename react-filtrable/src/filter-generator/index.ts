@@ -1,21 +1,26 @@
-import { Filter, FilterComponentProps } from "../types";
+import { Filter, StateMachine, SMState } from "../types";
+
 
 export default class FilterGenerator implements Filter {
-  stateMachine: any;
-  renderComponent: React.ComponentType<FilterComponentProps>;
+  stateMachine: StateMachine;
 
-  constructor(stateMachine: any, renderComponent: any) {
+  constructor(stateMachine: StateMachine) {
     this.stateMachine = stateMachine;
-    this.renderComponent = renderComponent;
   }
 
-  getNextState() {
-    return { active: false };
-  }
+  getNextState = (currentState: SMState) => {
+    const result = this.stateMachine.transitions.find(item => {
+      return JSON.stringify(currentState) === JSON.stringify(item.from);
+    });
 
-  getDefaultState() {}
+    if (result) {
+      return result.to;
+    }
 
-  getComponent = (): React.ComponentType<FilterComponentProps> => {
-    return this.renderComponent;
+    return this.getInitialState();
   };
+
+  getInitialState() {
+    return this.stateMachine.initial;
+  }
 }

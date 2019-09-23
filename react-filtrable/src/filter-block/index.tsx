@@ -1,7 +1,7 @@
 import * as React from "react";
 import { columnsMapper, getDefaultFilters } from "../utils";
-import { IColumnsDefinitions } from "../types";
-import { IState, IProps, DFMState } from "./interface";
+import { IColumnsDefinitions, SMState } from "../types";
+import { IState, IProps } from "./interface";
 
 function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
   const columns = columnsMapper(columnsDefinitions);
@@ -20,16 +20,14 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
       });
     };
 
-    changeFilterState = (columnName: string, nextState: DFMState) => {
+    changeFilterState = (columnName: string, nextState: SMState) => {
       const filters = { ...this.state.filters };
 
       const filterGroup = columnsDefinitions[columnName].group;
 
       // Переключаем остальные фильтры в группе в исходное состояние
       if (filterGroup) {
-        const columnNamesWithSameGroup = this.getGroupColumnNames(
-          filterGroup
-        );
+        const columnNamesWithSameGroup = this.getGroupColumnNames(filterGroup);
 
         columnNamesWithSameGroup.forEach((filterName: string) => {
           filters[filterName] = defaultFilters[filterName];
@@ -57,19 +55,15 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
       const { filters } = this.state;
 
       return columns.map(column => {
-        const filter = columnsDefinitions[column.name].filter;
+        const Component = columnsDefinitions[column.name].component;
 
-        if (filter) {
-          const FilterComponent = filter.getComponent();
-
-          return (
-            <FilterComponent
-              key={column.name}
-              currentState={filters[column.name]}
-              onClick={handleFilterClick(column.name)}
-            />
-          );
-        }
+        return (
+          <Component
+            key={column.name}
+            onClick={handleFilterClick(column.name)}
+            currentState={filters[column.name]}
+          />
+        );
       });
     }
   };

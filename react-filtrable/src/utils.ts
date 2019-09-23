@@ -1,6 +1,5 @@
 import dataSchemas from "./dataSchemas";
-import { IColumnsDefinitions, IColumnDefinition, Column, Filter } from './types';
-import { DFMState } from './filter-block/interface';
+import { IColumnsDefinitions, IColumnDefinition, Column, Filter, SMState } from './types';
 
 // Throws an exception
 export function validateColumnsDefinitions(columnsDefinitions: IColumnsDefinitions) {
@@ -34,13 +33,13 @@ export function columnsMapper(columnsDefinitions: IColumnsDefinitions) {
   return columns;
 }
 
-export function getDefaultFilters(columns: Array<Column>, columnsDefinitions: IColumnsDefinitions): Record<string, DFMState> {
+export function getDefaultFilters(columns: Array<Column>, columnsDefinitions: IColumnsDefinitions): Record<string, SMState> {
   const filters = {};
 
   columns.forEach(column => {
     const defaultFilterState = columnsDefinitions[
       column.name
-    ];
+    ].filter.getInitialState();
 
     if(defaultFilterState) {
       Object.assign(filters, { [column.name]: defaultFilterState });

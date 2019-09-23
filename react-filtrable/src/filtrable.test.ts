@@ -6,8 +6,27 @@ import {
 } from "./utils";
 
 import FilterGenerator from './filter-generator';
+import { StateMachine } from './types';
 
 describe("Filtrable methods", () => {
+  const stateMachine: StateMachine = {
+    initial: { isActive: true },
+    transitions: [
+      {
+        from: {
+          isActive: true
+        },
+        to: { isActive: false }
+      },
+      {
+        from: {
+          isActive: false
+        },
+        to: { isActive: true }
+      }
+    ]
+  };
+
   describe("validateColumnsDefinitions", () => {
     test("Should throw error. must be an object", () => {
       const testValue = "Test value" as any;
@@ -56,7 +75,7 @@ describe("Filtrable methods", () => {
         title: "Title",
         group: 1,
         enabled: false,
-        filter: new FilterGenerator()
+        filter: new FilterGenerator(stateMachine)
       } as any;
 
       expect(() =>
@@ -67,7 +86,7 @@ describe("Filtrable methods", () => {
     test("Should not throw error. Valid columnDefinition", () => {
       const validColumnDefinition = {
         title: "Title",
-        filter: new FilterGenerator()
+        filter: new FilterGenerator(stateMachine)
       } as any;
 
       expect(() =>
@@ -79,7 +98,7 @@ describe("Filtrable methods", () => {
   describe("getDefaultFilters", () => {
     const columns = [{ name: "id" }] as any;
 
-    const filter = new FilterGenerator();
+    const filter = new FilterGenerator(stateMachine);
     const columnsDefinitions = {
       id: {
         filter,
@@ -88,13 +107,13 @@ describe("Filtrable methods", () => {
 
     test("Should return value", () => {
       expect(getDefaultFilters(columns, columnsDefinitions)).toEqual({
-        id: { filter }
+        id: { ...stateMachine.initial }
       });
     });
   });
 
   describe("ColumnsMapper", () => {
-    const filter = new FilterGenerator();
+    const filter = new FilterGenerator(stateMachine);
 
     test("Should throw error. Not valid columnDefinition", () => {
       const invalidColumnDefinition = {};

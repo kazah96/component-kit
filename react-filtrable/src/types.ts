@@ -1,11 +1,25 @@
-import * as React from 'react';
-import { DFMState } from './filter-block/interface';
+import * as React from "react";
 
 export interface IColumnDefinition {
   title: string;
   group?: number;
   enabled?: boolean;
-  filter?: Filter;
+  filter: Filter;
+  component: React.ComponentType<FilterComponentProps>;
+}
+
+export interface SMState {
+  [key: string]: any;
+}
+
+export interface SMTransition {
+  from: SMState;
+  to: SMState;
+}
+
+export interface StateMachine {
+  initial: SMState;
+  transitions: Array<SMTransition>;
 }
 
 export interface IColumnsDefinitions extends Record<string, IColumnDefinition> {
@@ -18,11 +32,11 @@ export interface Column {
 }
 
 export interface FilterComponentProps {
-  currentState: DFMState;
-  onClick(columnName: string): void;
+  currentState: SMState;
+  onClick(): any;
 }
 
 export interface Filter {
-  getComponent(): React.ComponentType<FilterComponentProps>;
-  getNextState(currentState: DFMState): DFMState;
+  getNextState(currentState: SMState): SMState;
+  getInitialState(): SMState;
 }

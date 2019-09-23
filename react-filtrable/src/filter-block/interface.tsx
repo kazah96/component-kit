@@ -1,10 +1,7 @@
-
-export interface DFMState {
-  
-}
+import { SMState } from '../types';
 
 export interface IState {
-  filters: Record<string, DFMState>;
+  filters: Record<string, SMState>;
 }
 
 export interface IProps {
