@@ -1,5 +1,5 @@
-import dataSchemas from "./dataSchemas";
-import { IColumnsDefinitions, IColumnDefinition, Column, Filter, SMState } from './types';
+import dataSchemas from "../data-schemas";
+import { IColumnsDefinitions, IColumnDefinition, Column, Filter, SMState } from '../types';
 
 // Throws an exception
 export function validateColumnsDefinitions(columnsDefinitions: IColumnsDefinitions) {

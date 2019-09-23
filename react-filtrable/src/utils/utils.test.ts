@@ -3,10 +3,10 @@ import {
   validateColumnsDefinitions,
   validateColumnDefinition,
   getDefaultFilters
-} from "./utils";
+} from "./index";
 
-import FilterGenerator from './filter-generator';
-import { StateMachine } from './types';
+import FilterGenerator from '../filter-generator';
+import { StateMachine } from '../types';
 
 describe("Filtrable methods", () => {
   const stateMachine: StateMachine = {
