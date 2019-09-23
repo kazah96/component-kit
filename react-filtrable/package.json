@@ -6,8 +6,9 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
+    "test-watch": "jest --config jestconfig.json --watch",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm  run lint",
+    "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "lint": "tslint -p tsconfig.json",
     "build": "tsc"
@@ -25,9 +26,18 @@
     "url": "https://github.com/kazah96/component-kit/issues"
   },
   "homepage": "https://github.com/kazah96/component-kit#readme",
+  "dependencies": {
+    "yup": "0.27.0"
+  },
   "devDependencies": {
+    "@types/enzyme": "^3.10.3",
     "@types/jest": "^24.0.18",
+    "@types/react": "^16.8.24",
+    "@types/yup": "^0.26.24",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "jest": "^24.9.0",
+    "react": "^16.9.0",
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
