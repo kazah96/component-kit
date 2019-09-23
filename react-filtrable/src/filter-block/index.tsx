@@ -8,11 +8,28 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
   const defaultFilters = getDefaultFilters(columns, columnsDefinitions);
 
   return class FilterBlock extends React.PureComponent<IProps, IState> {
-    state = {
+    public state = {
       filters: defaultFilters
     };
 
-    getGroupColumnNames = (group: number) => {
+    public render() {
+      const { handleFilterClick } = this;
+      const { filters } = this.state;
+
+      return columns.map(column => {
+        const Component = columnsDefinitions[column.name].component;
+
+        return (
+          <Component
+            key={column.name}
+            onClick={handleFilterClick(column.name)}
+            currentState={filters[column.name]}
+          />
+        );
+      });
+    }
+
+    public getGroupColumnNames = (group: number) => {
       const { filters } = this.state;
 
       return Object.keys(filters).filter(columnName => {
@@ -20,7 +37,7 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
       });
     };
 
-    changeFilterState = (columnName: string, nextState: SMState) => {
+    public changeFilterState = (columnName: string, nextState: SMState) => {
       const filters = { ...this.state.filters };
 
       const filterGroup = columnsDefinitions[columnName].group;
@@ -39,7 +56,7 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
       this.setState({ filters });
     };
 
-    handleFilterClick = (columnName: string) => () => {
+    public handleFilterClick = (columnName: string) => () => {
       const currentState = this.state.filters[columnName];
       const filter = columnsDefinitions[columnName].filter;
 
@@ -49,23 +66,6 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
         this.changeFilterState(columnName, nextState);
       }
     };
-
-    render() {
-      const { handleFilterClick } = this;
-      const { filters } = this.state;
-
-      return columns.map(column => {
-        const Component = columnsDefinitions[column.name].component;
-
-        return (
-          <Component
-            key={column.name}
-            onClick={handleFilterClick(column.name)}
-            currentState={filters[column.name]}
-          />
-        );
-      });
-    }
   };
 }
 

@@ -33,7 +33,7 @@ export function columnsMapper(columnsDefinitions: IColumnsDefinitions) {
   return columns;
 }
 
-export function getDefaultFilters(columns: Array<Column>, columnsDefinitions: IColumnsDefinitions): Record<string, SMState> {
+export function getDefaultFilters(columns: Column[], columnsDefinitions: IColumnsDefinitions): Record<string, SMState> {
   const filters = {};
 
   columns.forEach(column => {

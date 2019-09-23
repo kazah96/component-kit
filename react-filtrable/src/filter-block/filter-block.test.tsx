@@ -63,8 +63,6 @@ describe("FilterBlock testing", () => {
     }
   };
 
-  beforeEach(() => {});
-
   test("Creating single filter", () => {
     const FilterBlock = createFilterBlock(columnDefinitions);
     const BlockComponent = shallow(<FilterBlock />);
@@ -83,8 +81,10 @@ describe("FilterBlock testing", () => {
     const FilterBlock = createFilterBlock(columnDefinitions);
     const BlockComponent = shallow(<FilterBlock />);
 
-    BlockComponent.dive().find('div').simulate('click');
+    BlockComponent.dive()
+      .find("div")
+      .simulate("click");
 
-    expect(BlockComponent.dive().find('.true').length).toEqual(1);
+    expect(BlockComponent.dive().find(".true").length).toEqual(1);
   });
 });

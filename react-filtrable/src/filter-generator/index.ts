@@ -2,13 +2,13 @@ import { Filter, StateMachine, SMState } from "../types";
 
 
 export default class FilterGenerator implements Filter {
-  stateMachine: StateMachine;
+  public stateMachine: StateMachine;
 
   constructor(stateMachine: StateMachine) {
     this.stateMachine = stateMachine;
   }
 
-  getNextState = (currentState: SMState) => {
+  public getNextState = (currentState: SMState) => {
     const result = this.stateMachine.transitions.find(item => {
       return JSON.stringify(currentState) === JSON.stringify(item.from);
     });
@@ -20,7 +20,7 @@ export default class FilterGenerator implements Filter {
     return this.getInitialState();
   };
 
-  getInitialState() {
+  public getInitialState() {
     return this.stateMachine.initial;
   }
 }
