@@ -7,6 +7,6 @@
     "outDir": "./lib",
     "strict": true
   },
-  "include": ["src"],
+  "include": ["src", "setupEnzyme.ts"],
   "exclude": ["node_modules", "**/__tests__/*", "**/*.test.*"]
 }
