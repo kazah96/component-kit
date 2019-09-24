@@ -11,7 +11,6 @@ class SelectableList extends React.PureComponent<IProps, IState> {
   public get items(): React.ReactNode[] {
     return React.Children.toArray(this.props.children);
   }
-  
   public static propTypes = {
     onSelectedItemChanged: func,
     onClickItem: func,
