@@ -27,7 +27,12 @@ describe("FilterBlock testing", () => {
     ]
   };
 
-  const RenderComponent = ({ currentState, onClick, name, title }: FilterComponentProps) => {
+  const RenderComponent = ({
+    currentState,
+    onClick,
+    name,
+    title
+  }: FilterComponentProps) => {
     if (currentState.isActive === true) {
       return <div onClick={onClick} id={name} className="true"></div>;
     }
@@ -91,33 +96,55 @@ describe("FilterBlock testing", () => {
   describe("Onclick and onFilterChange", () => {
     const FilterBlock = createFilterBlock(columnDefinitions);
     const fn = jest.fn();
-    const BlockComponent = shallow(<FilterBlock onFiltersChange={fn}/>);
+    const BlockComponent = shallow(<FilterBlock onFiltersChange={fn} />);
 
     BlockComponent.dive()
-    .find("div")
-    .simulate("click");
+      .find("div")
+      .simulate("click");
 
     BlockComponent.dive()
-    .find("div")
-    .simulate("click");
+      .find("div")
+      .simulate("click");
 
     BlockComponent.dive()
-    .find("div")
-    .simulate("click");
+      .find("div")
+      .simulate("click");
 
     test("To have first call to be Active", () => {
       expect(fn.mock.calls[0][0].id.isActive).toBeTruthy();
-    })
+    });
 
     test("To have second call not to be Active", () => {
       expect(fn.mock.calls[1][0].id.isActive).toBeFalsy();
-    })
+    });
 
     test("To have third call to be Active", () => {
       expect(fn.mock.calls[2][0].id.isActive).toBeTruthy();
-    })
+    });
   });
 
+  describe("Column from props", () => {
+    const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
+
+    test("To have two columns", () => {
+      const columns = [
+        { name: "id", title: "sa" },
+        { name: "title", title: " sdf" }
+      ];
+
+      const BlockComponent = shallow(<FilterBlock columns={columns} />);
+
+      expect(BlockComponent.length).toEqual(2);
+    });
+
+    test("To throw error; no such column definition", () => {
+      const columns = [
+        { name: "no such column", title: "sa" },
+      ];
+
+      expect(() => shallow(<FilterBlock columns={columns} />)).toThrowError();
+    })
+  });
 
   // describe("Filters grouping", () => {
   //   const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
@@ -126,9 +153,6 @@ describe("FilterBlock testing", () => {
 
   //   const idComp = BlockComponent.at(0).simulate('click')
 
-
-
   //   console.log(idComp.debug())
   // });
-  
 });

@@ -11,7 +11,7 @@ export function validateColumnDefinition(columnDefinition: IColumnDefinition) {
   return dataSchemas.columnDefinition.validateSync(columnDefinition);
 }
 
-export function columnsMapper(columnsDefinitions: IColumnsDefinitions) {
+export function columnsMapper(columnsDefinitions: IColumnsDefinitions): Column[] {
   validateColumnsDefinitions(columnsDefinitions);
 
   const keys = Object.keys(columnsDefinitions);

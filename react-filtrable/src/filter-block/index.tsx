@@ -1,6 +1,6 @@
 import * as React from "react";
 import { columnsMapper, getDefaultFilters } from "../utils";
-import { IColumnsDefinitions, SMState } from "../types";
+import { IColumnsDefinitions, SMState, Column } from "../types";
 import { IState } from "./interface";
 
 function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
@@ -8,19 +8,38 @@ function createFilterBlock(columnsDefinitions: IColumnsDefinitions) {
   const defaultFilters = getDefaultFilters(columns, columnsDefinitions);
 
   return class FilterBlock extends React.PureComponent<
-    { onFiltersChange?(filters: Record<string, SMState>): void },
+    {
+      columns?: Column[] | null;
+      onFiltersChange?(filters: Record<string, SMState>): void;
+    },
     IState
   > {
     public state = {
       filters: defaultFilters
     };
 
+    public getColumns = () => {
+      if (this.props.columns) {
+        return this.props.columns;
+      }
+
+      return columns;
+    };
+
     public render() {
       const { handleFilterClick } = this;
       const { filters } = this.state;
 
-      return columns.map(column => {
-        const Component = columnsDefinitions[column.name].component;
+      return this.getColumns().map(column => {
+        const columnDefinition = columnsDefinitions[column.name];
+
+        if (!columnDefinition) {
+          throw new Error(
+            `'${column.name}' is not specified in ColumnDefinitions`
+          );
+        }
+
+        const Component = columnDefinition.component;
 
         return (
           <Component
