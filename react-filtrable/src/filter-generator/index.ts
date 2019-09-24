@@ -4,6 +4,8 @@ import { Filter, StateMachine, SMState } from "../types";
 export default class FilterGenerator implements Filter {
   public stateMachine: StateMachine;
 
+  public TYPES = {};
+
   constructor(stateMachine: StateMachine) {
     this.stateMachine = stateMachine;
   }
