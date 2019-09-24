@@ -1,4 +1,4 @@
-import createFilterBlock from "./index";
+import FilterBlock from "./index";
 import * as React from "react";
 import {
   IColumnsDefinitions,
@@ -69,22 +69,27 @@ describe("FilterBlock testing", () => {
   };
 
   test("Creating single filter", () => {
-    const FilterBlock = createFilterBlock(columnDefinitions);
-    const BlockComponent = shallow(<FilterBlock />);
+    const BlockComponent = shallow(
+      <FilterBlock columnsDefinitions={columnDefinitions} />
+    );
 
     expect(BlockComponent.dive().find(".false").length).toEqual(1);
   });
 
   test("Creating three filters", () => {
-    const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
-    const BlockComponent = shallow(<FilterBlock />);
+    // const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
+    const BlockComponent = shallow(
+      <FilterBlock columnsDefinitions={columnDefinitionsThreeFilters} />
+    );
 
     expect(BlockComponent.length).toEqual(3);
   });
 
   test("Onclick simultation filter", () => {
-    const FilterBlock = createFilterBlock(columnDefinitions);
-    const BlockComponent = shallow(<FilterBlock />);
+    // const FilterBlock = createFilterBlock(columnDefinitions);
+    const BlockComponent = shallow(
+      <FilterBlock columnsDefinitions={columnDefinitions} />
+    );
 
     BlockComponent.dive()
       .find("div")
@@ -94,9 +99,15 @@ describe("FilterBlock testing", () => {
   });
 
   describe("Onclick and onFilterChange", () => {
-    const FilterBlock = createFilterBlock(columnDefinitions);
+    // const FilterBlock = createFilterBlock(columnDefinitions);
     const fn = jest.fn();
-    const BlockComponent = shallow(<FilterBlock onFiltersChange={fn} />);
+
+    const BlockComponent = shallow(
+      <FilterBlock
+        columnsDefinitions={columnDefinitions}
+        onFiltersChange={fn}
+      />
+    );
 
     BlockComponent.dive()
       .find("div")
@@ -124,26 +135,34 @@ describe("FilterBlock testing", () => {
   });
 
   describe("Column from props", () => {
-    const FilterBlock = createFilterBlock(columnDefinitionsThreeFilters);
-
     test("To have two columns", () => {
       const columns = [
         { name: "id", title: "sa" },
         { name: "title", title: " sdf" }
       ];
 
-      const BlockComponent = shallow(<FilterBlock columns={columns} />);
+      const BlockComponent = shallow(
+        <FilterBlock
+          columnsDefinitions={columnDefinitionsThreeFilters}
+          columns={columns}
+        />
+      );
 
       expect(BlockComponent.length).toEqual(2);
     });
 
     test("To throw error; no such column definition", () => {
-      const columns = [
-        { name: "no such column", title: "sa" },
-      ];
+      const columns = [{ name: "no such column", title: "sa" }];
 
-      expect(() => shallow(<FilterBlock columns={columns} />)).toThrowError();
-    })
+      expect(() =>
+        shallow(
+          <FilterBlock
+            columnsDefinitions={columnDefinitionsThreeFilters}
+            columns={columns}
+          />
+        )
+      ).toThrowError();
+    });
   });
 
   // describe("Filters grouping", () => {
