@@ -15,7 +15,7 @@ const Filter = ({ currentState, onClick }) => (
 );
 
 class App extends React.PureComponent {
-  state = { items: [1, 2, 3] };
+  state = { items: [] };
   render() {
     return (
       <div className="App">

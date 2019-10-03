@@ -56,6 +56,16 @@ class SelectableList extends React.PureComponent<IProps, IState> {
     this.registerKeyboardInput();
   }
 
+  public componentDidUpdate(prevProps: IProps) {
+    if (
+      React.Children.count(prevProps.children) === 0 &&
+      React.Children.count(prevProps.children) !==
+        React.Children.count(this.props.children)
+    ) {
+      this.onSelectedItemChanged(this.items[0]);
+    }
+  }
+
   public componentWillUnmount() {
     this.unregisterKeyboardInput();
   }
